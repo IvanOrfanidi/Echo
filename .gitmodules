@@ -1,0 +1,6 @@
+[submodule "Lib_TCP_UDP_Server"]
+	path = Lib_TCP_UDP_Server
+	url = https://github.com/IvanOrfanidi/Lib_TCP_UDP_Server.git
+[submodule "Lib_TCP_UDP_Client"]
+	path = Lib_TCP_UDP_Client
+	url = https://github.com/IvanOrfanidi/Lib_TCP_UDP_Client.git
