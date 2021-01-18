@@ -2,38 +2,25 @@
 #include <iostream>
 #include <string.h>
 
-#include <common.h>
 #include <include/tcp_server.h>
 
-int main(int argc, char* argv[])
+static constexpr char DEF_IP_ADDRESS[] = "127.0.0.1";
+static constexpr uint16_t DEF_TCP_PORT = 35000;
+static constexpr size_t MAX_SIZE_BUFFER = 255;
+
+int main()
 {
     bool isError = false;
     std::vector<char> rxData;
     rxData.reserve(MAX_SIZE_BUFFER);
 
-    Config config = GetConfigurationFromCommands(argc, argv);
-    if (config.ip.length() == 0) {
-        std::cout << "Please enter a valid IP address of the TCP server(default 127.0.0.1):" << std::endl;
-        std::getline(std::cin, config.ip);
-        if (config.ip.length() == 0) {
-            config.ip = DEF_IP_ADDRESS;
-        }
-    }
-    if (config.port.length() == 0) {
-        std::cout << "Please enter a valid port of the TCP server(default 35000):" << std::endl;
-        std::getline(std::cin, config.port);
-        if (config.port.length() == 0) {
-            config.port = DEF_TCP_PORT;
-        }
-    }
+    // Create Server
+    tcp_udp_server::TCP_Server tcpServer(DEF_IP_ADDRESS, DEF_TCP_PORT);
 
-    // Создаем TCP сервер
-    tcp_udp_server::TCP_Server tcpServer(config.ip.data(), atoi(config.port.data()));
-
-    // Старт TCP сервера
+    // Start
     try {
         tcpServer.start();
-        std::cout << "starting TCP server on port " << config.port << std::endl;
+        std::cout << "starting TCP server on port " << DEF_TCP_PORT << std::endl;
     } catch (...) {
         std::cerr << "error: server init" << std::endl;
         isError = true;
@@ -78,6 +65,8 @@ int main(int argc, char* argv[])
         }
 
         // Проверка на выход
+        static constexpr char END[] = "end";
+        static constexpr size_t LENGTH_OF_END = sizeof(END) - 1U;
         if ((rxData.size() == LENGTH_OF_END) && (memcmp(rxData.data(), END, LENGTH_OF_END) == 0)) {
             break;
         }
@@ -86,7 +75,7 @@ int main(int argc, char* argv[])
     }
 
     tcpServer.stop();
-    std::cout << "stop TCP server on port " << config.port << std::endl;
+    std::cout << "stop TCP server on port " << DEF_TCP_PORT << std::endl;
 
     if (isError) {
         return EXIT_FAILURE;

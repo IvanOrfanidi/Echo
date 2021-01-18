@@ -52,7 +52,6 @@ add_executable(${PROJECT_NAME}_client ${CLIENT})
 # Link lib TCP/UDP server, client
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/build/tcp_udp_server)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/build/tcp_udp_client)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 target_include_directories(${PROJECT_NAME}_server PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(${PROJECT_NAME}_client PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
